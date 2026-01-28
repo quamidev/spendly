@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editor/ide
+.vscode/
+
+# mcp config
+.mcp.json
