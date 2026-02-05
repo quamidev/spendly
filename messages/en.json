@@ -1,0 +1,15 @@
+{
+  "Metadata": {
+    "title": "$pendly",
+    "description": "Personal expense management application"
+  },
+  "lang-switcher": {
+    "es": "Spanish",
+    "en": "English"
+  },
+  "theme-switcher": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  }
+}

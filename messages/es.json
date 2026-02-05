@@ -1,0 +1,15 @@
+{
+  "Metadata": {
+    "title": "$pendly",
+    "description": "Aplicación de gestión de gastos personales"
+  },
+  "lang-switcher": {
+    "es": "Español",
+    "en": "Inglés"
+  },
+  "theme-switcher": {
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  }
+}
