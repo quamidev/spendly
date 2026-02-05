@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,8 +24,9 @@ export function UpdatePasswordForm({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const t = useTranslations("Auth.updatePassword");
 
-  const handleForgotPassword = async (e: React.FormEvent) => {
+  const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     const supabase = createClient();
     setIsLoading(true);
@@ -35,10 +37,9 @@ export function UpdatePasswordForm({
       if (error) {
         throw error;
       }
-      // Update this route to redirect to an authenticated route. The user already has an active session.
       router.push("/protected");
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      setError(error instanceof Error ? error.message : t("errorGeneric"));
     } finally {
       setIsLoading(false);
     }
@@ -48,20 +49,18 @@ export function UpdatePasswordForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Reset Your Password</CardTitle>
-          <CardDescription>
-            Please enter your new password below.
-          </CardDescription>
+          <CardTitle className="text-2xl">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleForgotPassword}>
+          <form onSubmit={handleUpdatePassword}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="password">New password</Label>
+                <Label htmlFor="password">{t("newPassword")}</Label>
                 <Input
                   id="password"
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="New password"
+                  placeholder={t("newPasswordPlaceholder")}
                   required
                   type="password"
                   value={password}
@@ -69,7 +68,7 @@ export function UpdatePasswordForm({
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
               <Button className="w-full" disabled={isLoading} type="submit">
-                {isLoading ? "Saving..." : "Save new password"}
+                {isLoading ? t("submitting") : t("submit")}
               </Button>
             </div>
           </form>

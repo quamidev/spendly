@@ -3,6 +3,7 @@
 import { Mail } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +29,7 @@ export function LoginForm({
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const t = useTranslations("Auth.login");
 
   const handlePasswordLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,9 +48,7 @@ export function LoginForm({
       }
       router.push("/dashboard");
     } catch (error: unknown) {
-      setError(
-        error instanceof Error ? error.message : "Ocurrió un error al ingresar"
-      );
+      setError(error instanceof Error ? error.message : t("errorLogin"));
     } finally {
       setIsLoading(false);
     }
@@ -62,7 +62,7 @@ export function LoginForm({
     setSuccess(null);
 
     if (!email) {
-      setError("Ingresa tu email");
+      setError(t("errorEnterEmail"));
       setIsLoading(false);
       return;
     }
@@ -77,15 +77,9 @@ export function LoginForm({
       if (error) {
         throw error;
       }
-      setSuccess(
-        "Te enviamos un enlace mágico a tu correo. Revisa tu bandeja de entrada."
-      );
+      setSuccess(t("magicLinkSuccess"));
     } catch (error: unknown) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Ocurrió un error al enviar el enlace"
-      );
+      setError(error instanceof Error ? error.message : t("errorMagicLink"));
     } finally {
       setIsLoading(false);
     }
@@ -95,35 +89,32 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Iniciar sesión</CardTitle>
-          <CardDescription>
-            Elige cómo quieres acceder a tu cuenta
-          </CardDescription>
+          <CardTitle className="text-2xl">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs className="w-full" defaultValue="magic-link">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="magic-link">Magic Link</TabsTrigger>
-              <TabsTrigger value="password">Contraseña</TabsTrigger>
+              <TabsTrigger value="magic-link">{t("tabMagicLink")}</TabsTrigger>
+              <TabsTrigger value="password">{t("tabPassword")}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="magic-link">
               <form className="mt-4" onSubmit={handleMagicLinkLogin}>
                 <div className="flex flex-col gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="email-magic">Email</Label>
+                    <Label htmlFor="email-magic">{t("email")}</Label>
                     <Input
                       id="email-magic"
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="tu@email.com"
+                      placeholder={t("emailPlaceholder")}
                       required
                       type="email"
                       value={email}
                     />
                   </div>
                   <p className="text-muted-foreground text-sm">
-                    Te enviaremos un enlace mágico a tu correo para iniciar
-                    sesión sin contraseña.
+                    {t("magicLinkInfo")}
                   </p>
                   {error && <p className="text-red-500 text-sm">{error}</p>}
                   {success && (
@@ -137,7 +128,7 @@ export function LoginForm({
                     disabled={isLoading || !!success}
                     type="submit"
                   >
-                    {isLoading ? "Enviando..." : "Enviar enlace mágico"}
+                    {isLoading ? t("sending") : t("sendMagicLink")}
                   </Button>
                 </div>
               </form>
@@ -147,11 +138,11 @@ export function LoginForm({
               <form className="mt-4" onSubmit={handlePasswordLogin}>
                 <div className="flex flex-col gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="email-password">Email</Label>
+                    <Label htmlFor="email-password">{t("email")}</Label>
                     <Input
                       id="email-password"
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="tu@email.com"
+                      placeholder={t("emailPlaceholder")}
                       required
                       type="email"
                       value={email}
@@ -159,12 +150,12 @@ export function LoginForm({
                   </div>
                   <div className="grid gap-2">
                     <div className="flex items-center">
-                      <Label htmlFor="password">Contraseña</Label>
+                      <Label htmlFor="password">{t("password")}</Label>
                       <Link
                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                         href="/auth/forgot-password"
                       >
-                        ¿Olvidaste tu contraseña?
+                        {t("forgotPassword")}
                       </Link>
                     </div>
                     <Input
@@ -177,7 +168,7 @@ export function LoginForm({
                   </div>
                   {error && <p className="text-red-500 text-sm">{error}</p>}
                   <Button className="w-full" disabled={isLoading} type="submit">
-                    {isLoading ? "Ingresando..." : "Ingresar"}
+                    {isLoading ? t("loggingIn") : t("logIn")}
                   </Button>
                 </div>
               </form>
@@ -185,9 +176,9 @@ export function LoginForm({
           </Tabs>
 
           <div className="mt-6 text-center text-sm">
-            ¿No tienes cuenta?{" "}
+            {t("noAccount")}{" "}
             <Link className="underline underline-offset-4" href="/auth/sign-up">
-              Crear cuenta
+              {t("createAccount")}
             </Link>
           </div>
         </CardContent>

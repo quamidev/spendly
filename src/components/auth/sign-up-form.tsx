@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +27,7 @@ export function SignUpForm({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const t = useTranslations("Auth.signUp");
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,13 +36,13 @@ export function SignUpForm({
     setError(null);
 
     if (password !== repeatPassword) {
-      setError("Las contraseñas no coinciden");
+      setError(t("errorPasswordsMismatch"));
       setIsLoading(false);
       return;
     }
 
     if (password.length < 6) {
-      setError("La contraseña debe tener al menos 6 caracteres");
+      setError(t("errorPasswordLength"));
       setIsLoading(false);
       return;
     }
@@ -58,7 +60,7 @@ export function SignUpForm({
       }
       router.push("/auth/sign-up-success");
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "Ocurrió un error");
+      setError(error instanceof Error ? error.message : t("errorGeneric"));
     } finally {
       setIsLoading(false);
     }
@@ -68,42 +70,40 @@ export function SignUpForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Crear cuenta</CardTitle>
-          <CardDescription>
-            Ingresa tus datos para crear una nueva cuenta
-          </CardDescription>
+          <CardTitle className="text-2xl">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignUp}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("email")}</Label>
                 <Input
                   id="email"
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="tu@email.com"
+                  placeholder={t("emailPlaceholder")}
                   required
                   type="email"
                   value={email}
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">Contraseña</Label>
+                <Label htmlFor="password">{t("password")}</Label>
                 <Input
                   id="password"
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Mínimo 6 caracteres"
+                  placeholder={t("passwordPlaceholder")}
                   required
                   type="password"
                   value={password}
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="repeat-password">Confirmar contraseña</Label>
+                <Label htmlFor="repeat-password">{t("confirmPassword")}</Label>
                 <Input
                   id="repeat-password"
                   onChange={(e) => setRepeatPassword(e.target.value)}
-                  placeholder="Repite tu contraseña"
+                  placeholder={t("confirmPasswordPlaceholder")}
                   required
                   type="password"
                   value={repeatPassword}
@@ -111,13 +111,13 @@ export function SignUpForm({
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
               <Button className="w-full" disabled={isLoading} type="submit">
-                {isLoading ? "Creando cuenta..." : "Crear cuenta"}
+                {isLoading ? t("submitting") : t("submit")}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              ¿Ya tienes cuenta?{" "}
+              {t("hasAccount")}{" "}
               <Link className="underline underline-offset-4" href="/auth/login">
-                Iniciar sesión
+                {t("login")}
               </Link>
             </div>
           </form>

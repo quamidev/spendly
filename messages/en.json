@@ -11,5 +11,81 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System"
+  },
+  "Auth": {
+    "login": {
+      "title": "Log in",
+      "description": "Choose how you want to access your account",
+      "tabMagicLink": "Magic Link",
+      "tabPassword": "Password",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "magicLinkInfo": "We'll send a magic link to your email to log in without a password.",
+      "sendMagicLink": "Send magic link",
+      "sending": "Sending...",
+      "logIn": "Log in",
+      "loggingIn": "Logging in...",
+      "forgotPassword": "Forgot your password?",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create account",
+      "magicLinkSuccess": "We sent a magic link to your email. Check your inbox.",
+      "errorEnterEmail": "Enter your email",
+      "errorLogin": "An error occurred while logging in",
+      "errorMagicLink": "An error occurred while sending the link"
+    },
+    "signUp": {
+      "title": "Create account",
+      "description": "Enter your details to create a new account",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "Minimum 6 characters",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPlaceholder": "Repeat your password",
+      "submit": "Create account",
+      "submitting": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "login": "Log in",
+      "errorPasswordsMismatch": "Passwords don't match",
+      "errorPasswordLength": "Password must be at least 6 characters",
+      "errorGeneric": "An error occurred"
+    },
+    "signUpSuccess": {
+      "title": "Account created",
+      "description": "Your account has been created successfully",
+      "checkEmail": "Check your email",
+      "confirmationSent": "We sent you a confirmation link",
+      "goToLogin": "Go to login"
+    },
+    "forgotPassword": {
+      "title": "Reset your password",
+      "description": "Enter your email and we'll send you a link to reset your password",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "submit": "Send reset email",
+      "submitting": "Sending...",
+      "hasAccount": "Already have an account?",
+      "login": "Log in",
+      "successTitle": "Check your email",
+      "successDescription": "Password reset instructions sent",
+      "successText": "If you registered using your email and password, you will receive a password reset email.",
+      "errorGeneric": "An error occurred"
+    },
+    "updatePassword": {
+      "title": "Reset your password",
+      "description": "Please enter your new password below.",
+      "newPassword": "New password",
+      "newPasswordPlaceholder": "New password",
+      "submit": "Save new password",
+      "submitting": "Saving...",
+      "errorGeneric": "An error occurred"
+    },
+    "error": {
+      "title": "Sorry, something went wrong.",
+      "codeError": "Error code: {error}",
+      "unspecifiedError": "An unspecified error occurred."
+    },
+    "logout": "Log out"
   }
 }

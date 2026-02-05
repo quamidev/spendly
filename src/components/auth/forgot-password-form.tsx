@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +24,7 @@ export function ForgotPasswordForm({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations("Auth.forgotPassword");
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +33,6 @@ export function ForgotPasswordForm({
     setError(null);
 
     try {
-      // The url which will be included in the email. This URL needs to be configured in your redirect URLs in the Supabase dashboard at https://supabase.com/dashboard/project/_/auth/url-configuration
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/update-password`,
       });
@@ -40,7 +41,7 @@ export function ForgotPasswordForm({
       }
       setSuccess(true);
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      setError(error instanceof Error ? error.message : t("errorGeneric"));
     } finally {
       setIsLoading(false);
     }
@@ -51,34 +52,28 @@ export function ForgotPasswordForm({
       {success ? (
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Check Your Email</CardTitle>
-            <CardDescription>Password reset instructions sent</CardDescription>
+            <CardTitle className="text-2xl">{t("successTitle")}</CardTitle>
+            <CardDescription>{t("successDescription")}</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground text-sm">
-              If you registered using your email and password, you will receive
-              a password reset email.
-            </p>
+            <p className="text-muted-foreground text-sm">{t("successText")}</p>
           </CardContent>
         </Card>
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Reset Your Password</CardTitle>
-            <CardDescription>
-              Type in your email and we&apos;ll send you a link to reset your
-              password
-            </CardDescription>
+            <CardTitle className="text-2xl">{t("title")}</CardTitle>
+            <CardDescription>{t("description")}</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleForgotPassword}>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{t("email")}</Label>
                   <Input
                     id="email"
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="m@example.com"
+                    placeholder={t("emailPlaceholder")}
                     required
                     type="email"
                     value={email}
@@ -86,16 +81,16 @@ export function ForgotPasswordForm({
                 </div>
                 {error && <p className="text-red-500 text-sm">{error}</p>}
                 <Button className="w-full" disabled={isLoading} type="submit">
-                  {isLoading ? "Sending..." : "Send reset email"}
+                  {isLoading ? t("submitting") : t("submit")}
                 </Button>
               </div>
               <div className="mt-4 text-center text-sm">
-                Already have an account?{" "}
+                {t("hasAccount")}{" "}
                 <Link
                   className="underline underline-offset-4"
                   href="/auth/login"
                 >
-                  Login
+                  {t("login")}
                 </Link>
               </div>
             </form>
