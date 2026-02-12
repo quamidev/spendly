@@ -12,6 +12,16 @@
     "dark": "Oscuro",
     "system": "Sistema"
   },
+  "Sidebar": {
+    "dashboard": "Dashboard",
+    "expenses": "Gastos",
+    "settings": "Configuración",
+    "categories": "Categorías",
+    "accounts": "Cuentas",
+    "responsibles": "Responsables",
+    "support": "Soporte",
+    "feedback": "Comentarios"
+  },
   "Landing": {
     "login": "Iniciar sesión",
     "softwareStudio": "Estudio de software",

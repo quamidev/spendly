@@ -12,6 +12,16 @@
     "dark": "Dark",
     "system": "System"
   },
+  "Sidebar": {
+    "dashboard": "Dashboard",
+    "expenses": "Expenses",
+    "settings": "Settings",
+    "categories": "Categories",
+    "accounts": "Accounts",
+    "responsibles": "Responsibles",
+    "support": "Support",
+    "feedback": "Feedback"
+  },
   "Landing": {
     "login": "Log in",
     "softwareStudio": "Software studio",
