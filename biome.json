@@ -27,6 +27,28 @@
       "react": "recommended"
     }
   },
+  "overrides": [
+    {
+      "includes": [
+        "src/components/ui/chart.tsx",
+        "src/components/ui/calendar.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noNamespaceImport": "off"
+          },
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          },
+          "style": {
+            "useConsistentTypeDefinitions": "off",
+            "useBlockStatements": "off"
+          }
+        }
+      }
+    }
+  ],
   "assist": {
     "actions": {
       "source": {

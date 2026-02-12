@@ -102,5 +102,97 @@
       "unspecifiedError": "An unspecified error occurred."
     },
     "logout": "Log out"
+  },
+  "Dashboard": {
+    "totalThisMonth": "Total this month",
+    "vsPreviousMonth": "vs Previous month",
+    "topCategory": "Top category",
+    "previousMonthAmount": "{amount} last month",
+    "thisMonth": "{amount} this month",
+    "noData": "No data",
+    "expensesByCategory": "Expenses by category",
+    "currentMonthBreakdown": "Current month breakdown",
+    "dailyTrend": "Daily trend",
+    "dailyTrendDescription": "Day-by-day expenses this month",
+    "recentExpenses": "Recent expenses",
+    "recentExpensesDescription": "Last 5 recorded expenses",
+    "noExpenses": "No expenses recorded",
+    "noCategoryData": "No category data",
+    "noExpenseData": "No expense data this month",
+    "uncategorized": "Uncategorized",
+    "expenseLabel": "Expense"
+  },
+  "Expenses": {
+    "pageTitle": "Expenses",
+    "newExpense": "New expense",
+    "editExpense": "Edit expense",
+    "form": {
+      "title": "Expense details",
+      "editTitle": "Edit expense",
+      "date": "Date",
+      "amount": "Amount",
+      "currency": "Currency",
+      "description": "Description",
+      "descriptionPlaceholder": "E.g.: Lunch at restaurant",
+      "category": "Category",
+      "selectCategory": "Select category",
+      "account": "Account",
+      "selectAccount": "Select account",
+      "owner": "Responsible",
+      "selectOwner": "Select responsible",
+      "notes": "Notes",
+      "notesPlaceholder": "Additional notes (optional)",
+      "create": "Create expense",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "created": "Expense created successfully",
+      "updated": "Expense updated successfully",
+      "error": "An error occurred while saving",
+      "validationError": "Please enter the amount and description"
+    },
+    "list": {
+      "empty": "No expenses recorded",
+      "emptyDescription": "Create your first expense to get started",
+      "createFirst": "Create first expense",
+      "deleted": "Expense deleted",
+      "deleteError": "Error deleting expense",
+      "deleteTitle": "Delete expense?",
+      "deleteDescription": "This action cannot be undone. The expense will be permanently deleted.",
+      "confirmDelete": "Delete"
+    },
+    "table": {
+      "date": "Date",
+      "description": "Description",
+      "category": "Category",
+      "account": "Account",
+      "owner": "Responsible",
+      "amount": "Amount"
+    },
+    "filters": {
+      "allCategories": "All categories",
+      "allAccounts": "All accounts",
+      "allOwners": "All responsibles"
+    },
+    "pagination": {
+      "showing": "Showing {from}-{to} of {total}"
+    },
+    "ai": {
+      "title": "Smart input",
+      "description": "Describe the expense with text or voice and AI will classify it automatically",
+      "textPlaceholder": "E.g.: Spent $150 on lunch today with credit card",
+      "recording": "Recording...",
+      "transcribing": "Transcribing audio...",
+      "classifying": "Classifying expense...",
+      "classified": "Expense classified by AI",
+      "show": "Show AI",
+      "hide": "Hide AI",
+      "create": "Create",
+      "suggestNewCategory": "Suggestion: create category \"{name}\"",
+      "suggestNewAccount": "Suggestion: create account \"{name}\"",
+      "suggestNewOwner": "Suggestion: create responsible \"{name}\"",
+      "categoryCreated": "Category \"{name}\" created",
+      "accountCreated": "Account \"{name}\" created",
+      "ownerCreated": "Responsible \"{name}\" created"
+    }
   }
 }

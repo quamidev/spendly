@@ -102,5 +102,97 @@
       "unspecifiedError": "Ocurrió un error no especificado."
     },
     "logout": "Cerrar sesión"
+  },
+  "Dashboard": {
+    "totalThisMonth": "Total este mes",
+    "vsPreviousMonth": "vs Mes anterior",
+    "topCategory": "Top categoría",
+    "previousMonthAmount": "{amount} el mes pasado",
+    "thisMonth": "{amount} este mes",
+    "noData": "Sin datos",
+    "expensesByCategory": "Gastos por categoría",
+    "currentMonthBreakdown": "Desglose del mes actual",
+    "dailyTrend": "Tendencia diaria",
+    "dailyTrendDescription": "Gastos día a día este mes",
+    "recentExpenses": "Gastos recientes",
+    "recentExpensesDescription": "Últimos 5 gastos registrados",
+    "noExpenses": "No hay gastos registrados",
+    "noCategoryData": "No hay datos de categorías",
+    "noExpenseData": "No hay datos de gastos este mes",
+    "uncategorized": "Sin categoría",
+    "expenseLabel": "Gasto"
+  },
+  "Expenses": {
+    "pageTitle": "Gastos",
+    "newExpense": "Nuevo gasto",
+    "editExpense": "Editar gasto",
+    "form": {
+      "title": "Detalle del gasto",
+      "editTitle": "Editar gasto",
+      "date": "Fecha",
+      "amount": "Monto",
+      "currency": "Moneda",
+      "description": "Descripción",
+      "descriptionPlaceholder": "Ej: Almuerzo en restaurante",
+      "category": "Categoría",
+      "selectCategory": "Seleccionar categoría",
+      "account": "Cuenta",
+      "selectAccount": "Seleccionar cuenta",
+      "owner": "Responsable",
+      "selectOwner": "Seleccionar responsable",
+      "notes": "Notas",
+      "notesPlaceholder": "Notas adicionales (opcional)",
+      "create": "Crear gasto",
+      "save": "Guardar cambios",
+      "cancel": "Cancelar",
+      "created": "Gasto creado exitosamente",
+      "updated": "Gasto actualizado exitosamente",
+      "error": "Ocurrió un error al guardar",
+      "validationError": "Ingresa el monto y la descripción"
+    },
+    "list": {
+      "empty": "No hay gastos registrados",
+      "emptyDescription": "Crea tu primer gasto para comenzar",
+      "createFirst": "Crear primer gasto",
+      "deleted": "Gasto eliminado",
+      "deleteError": "Error al eliminar el gasto",
+      "deleteTitle": "¿Eliminar gasto?",
+      "deleteDescription": "Esta acción no se puede deshacer. El gasto será eliminado permanentemente.",
+      "confirmDelete": "Eliminar"
+    },
+    "table": {
+      "date": "Fecha",
+      "description": "Descripción",
+      "category": "Categoría",
+      "account": "Cuenta",
+      "owner": "Responsable",
+      "amount": "Monto"
+    },
+    "filters": {
+      "allCategories": "Todas las categorías",
+      "allAccounts": "Todas las cuentas",
+      "allOwners": "Todos los responsables"
+    },
+    "pagination": {
+      "showing": "Mostrando {from}-{to} de {total}"
+    },
+    "ai": {
+      "title": "Entrada inteligente",
+      "description": "Describe el gasto con texto o voz y la IA lo clasificará automáticamente",
+      "textPlaceholder": "Ej: Gasté Q150 en almuerzo hoy con tarjeta de crédito",
+      "recording": "Grabando...",
+      "transcribing": "Transcribiendo audio...",
+      "classifying": "Clasificando gasto...",
+      "classified": "Gasto clasificado por IA",
+      "show": "Mostrar IA",
+      "hide": "Ocultar IA",
+      "create": "Crear",
+      "suggestNewCategory": "Sugerencia: crear categoría \"{name}\"",
+      "suggestNewAccount": "Sugerencia: crear cuenta \"{name}\"",
+      "suggestNewOwner": "Sugerencia: crear responsable \"{name}\"",
+      "categoryCreated": "Categoría \"{name}\" creada",
+      "accountCreated": "Cuenta \"{name}\" creada",
+      "ownerCreated": "Responsable \"{name}\" creado"
+    }
   }
 }
