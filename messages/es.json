@@ -12,6 +12,11 @@
     "dark": "Oscuro",
     "system": "Sistema"
   },
+  "Landing": {
+    "login": "Iniciar sesión",
+    "softwareStudio": "Estudio de software",
+    "copyright": "{year} Quami. Propiedad de MIDI. SA"
+  },
   "Auth": {
     "login": {
       "title": "Iniciar sesión",

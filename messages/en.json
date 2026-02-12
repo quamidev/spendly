@@ -12,6 +12,11 @@
     "dark": "Dark",
     "system": "System"
   },
+  "Landing": {
+    "login": "Log in",
+    "softwareStudio": "Software studio",
+    "copyright": "{year} Quami. Property of MIDI. SA"
+  },
   "Auth": {
     "login": {
       "title": "Log in",
