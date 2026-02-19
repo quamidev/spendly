@@ -25,7 +25,75 @@
   "Landing": {
     "login": "Iniciar sesión",
     "softwareStudio": "Estudio de software",
-    "copyright": "{year} Quami. Propiedad de MIDI. SA"
+    "copyright": "{year} Quami. Propiedad de MIDI. SA",
+    "hero": {
+      "headline": "Controla tus gastos de forma inteligente",
+      "subtitle": "La app que clasifica tus gastos con IA, organiza tus finanzas y te da reportes visuales en tiempo real.",
+      "rotatingWords": "gastos,categorias,cuentas,reportes",
+      "cta": "Comenzar gratis"
+    },
+    "stats": {
+      "usersLabel": "Usuarios activos",
+      "usersValue": "1200",
+      "expensesLabel": "Gastos registrados",
+      "expensesValue": "50000",
+      "categoriesLabel": "Categorias creadas",
+      "categoriesValue": "8500"
+    },
+    "features": {
+      "title": "Todo lo que necesitas",
+      "ai": {
+        "title": "Clasificacion con IA",
+        "description": "Describe tu gasto con texto o voz y la inteligencia artificial lo clasifica automaticamente."
+      },
+      "categories": {
+        "title": "Categorias inteligentes",
+        "description": "Organiza tus gastos con categorias personalizadas y etiquetas de color."
+      },
+      "dashboard": {
+        "title": "Dashboard visual",
+        "description": "Graficos interactivos que te muestran tendencias diarias y desgloses por categoria."
+      },
+      "accounts": {
+        "title": "Multi-cuenta y responsables",
+        "description": "Gestiona multiples cuentas y asigna responsables a cada gasto."
+      }
+    },
+    "howItWorks": {
+      "title": "Como funciona",
+      "step1": {
+        "title": "Registra tu gasto",
+        "description": "Escribe o dicta tu gasto y la IA lo clasifica al instante."
+      },
+      "step2": {
+        "title": "Organiza automaticamente",
+        "description": "Se asigna categoria, cuenta y responsable de forma inteligente."
+      },
+      "step3": {
+        "title": "Visualiza tus finanzas",
+        "description": "Consulta graficos y reportes para tomar mejores decisiones."
+      }
+    },
+    "pricing": {
+      "title": "Planes simples y transparentes",
+      "free": {
+        "name": "Gratis",
+        "price": "$0",
+        "period": "/mes",
+        "features": "Hasta 100 gastos/mes,3 categorias,1 cuenta,Dashboard basico,Clasificacion con IA"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$4.99",
+        "period": "/mes",
+        "features": "Gastos ilimitados,Categorias ilimitadas,Cuentas ilimitadas,Responsables ilimitados,Dashboard avanzado,Exportar a CSV,Soporte prioritario"
+      },
+      "cta": "Elegir plan"
+    },
+    "cta": {
+      "headline": "Empieza a controlar tus finanzas hoy",
+      "button": "Crear cuenta gratis"
+    }
   },
   "Auth": {
     "login": {

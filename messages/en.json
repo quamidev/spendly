@@ -25,7 +25,75 @@
   "Landing": {
     "login": "Log in",
     "softwareStudio": "Software studio",
-    "copyright": "{year} Quami. Property of MIDI. SA"
+    "copyright": "{year} Quami. Property of MIDI. SA",
+    "hero": {
+      "headline": "Control your expenses intelligently",
+      "subtitle": "The app that classifies your expenses with AI, organizes your finances and gives you real-time visual reports.",
+      "rotatingWords": "expenses,categories,accounts,reports",
+      "cta": "Get started free"
+    },
+    "stats": {
+      "usersLabel": "Active users",
+      "usersValue": "1200",
+      "expensesLabel": "Expenses tracked",
+      "expensesValue": "50000",
+      "categoriesLabel": "Categories created",
+      "categoriesValue": "8500"
+    },
+    "features": {
+      "title": "Everything you need",
+      "ai": {
+        "title": "AI Classification",
+        "description": "Describe your expense with text or voice and artificial intelligence classifies it automatically."
+      },
+      "categories": {
+        "title": "Smart categories",
+        "description": "Organize your expenses with custom categories and color tags."
+      },
+      "dashboard": {
+        "title": "Visual dashboard",
+        "description": "Interactive charts showing daily trends and breakdowns by category."
+      },
+      "accounts": {
+        "title": "Multi-account & responsibles",
+        "description": "Manage multiple accounts and assign responsibles to each expense."
+      }
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "step1": {
+        "title": "Record your expense",
+        "description": "Type or dictate your expense and AI classifies it instantly."
+      },
+      "step2": {
+        "title": "Auto-organize",
+        "description": "Category, account and responsible are assigned intelligently."
+      },
+      "step3": {
+        "title": "Visualize your finances",
+        "description": "Check charts and reports to make better decisions."
+      }
+    },
+    "pricing": {
+      "title": "Simple, transparent pricing",
+      "free": {
+        "name": "Free",
+        "price": "$0",
+        "period": "/month",
+        "features": "Up to 100 expenses/month,3 categories,1 account,Basic dashboard,AI classification"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$4.99",
+        "period": "/month",
+        "features": "Unlimited expenses,Unlimited categories,Unlimited accounts,Unlimited responsibles,Advanced dashboard,Export to CSV,Priority support"
+      },
+      "cta": "Choose plan"
+    },
+    "cta": {
+      "headline": "Start controlling your finances today",
+      "button": "Create free account"
+    }
   },
   "Auth": {
     "login": {

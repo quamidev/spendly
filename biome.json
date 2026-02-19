@@ -47,6 +47,16 @@
           }
         }
       }
+    },
+    {
+      "includes": ["src/components/reactbits/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noArrayIndexKey": "off"
+          }
+        }
+      }
     }
   ],
   "assist": {
