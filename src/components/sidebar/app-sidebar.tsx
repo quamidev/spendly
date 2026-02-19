@@ -7,6 +7,7 @@ import {
   Send,
   Settings2,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import type * as React from "react";
 import { NavMain } from "@/components/sidebar/nav-main";
@@ -19,25 +20,32 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  user: {
+    name: string;
+    email: string;
+    image: string | null;
+  };
+}
+
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   const t = useTranslations("Sidebar");
+  const pathname = usePathname();
 
   const navMain = [
     {
       title: t("dashboard"),
       url: "/dashboard",
       icon: LayoutDashboard,
+      isActive: pathname.startsWith("/dashboard"),
     },
     {
       title: t("expenses"),
       url: "/expenses",
       icon: Receipt,
-      isActive: true,
+      isActive: pathname.startsWith("/expenses"),
     },
   ];
 
@@ -46,11 +54,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: t("settings"),
       url: "/settings",
       icon: Settings2,
-      isActive: true,
+      isActive: pathname.startsWith("/settings"),
       items: [
         { title: t("categories"), url: "/settings/categories" },
         { title: t("accounts"), url: "/settings/accounts" },
-        { title: t("responsibles"), url: "/settings/responsibles" },
+        { title: t("responsibles"), url: "/settings/owners" },
       ],
     },
   ];
@@ -68,27 +76,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     },
   ];
 
-  const user = {
-    name: "Usuario",
-    email: "usuario@example.com",
-    avatar: "",
-  };
-
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:p-1.5!"
-            >
-              <a href="/dashboard">
-                <SpendlyLogo className="text-lg" />
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <a className="px-2 pt-1 pb-2" href="/dashboard">
+          <SpendlyLogo className="text-xl" />
+        </a>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />

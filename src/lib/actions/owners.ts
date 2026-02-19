@@ -27,6 +27,29 @@ export async function getActiveOwners(): Promise<Owner[]> {
   return (data as Owner[]) ?? [];
 }
 
+export async function getOwners(): Promise<Owner[]> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("owners")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("name");
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return (data as Owner[]) ?? [];
+}
+
 export async function createOwner(input: {
   name: string;
   color_tag: string;
@@ -56,4 +79,59 @@ export async function createOwner(input: {
   }
 
   return data as Owner;
+}
+
+export async function updateOwner(
+  id: string,
+  input: {
+    name?: string;
+    color_tag?: string;
+    is_active?: boolean;
+  }
+): Promise<{ success: true } | { success: false; error: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  const { error } = await supabase
+    .from("owners")
+    .update(input)
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  return { success: true };
+}
+
+export async function deleteOwner(
+  id: string
+): Promise<{ success: true } | { success: false; error: string }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: "Not authenticated" };
+  }
+
+  const { error } = await supabase
+    .from("owners")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  return { success: true };
 }

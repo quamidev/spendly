@@ -11,6 +11,77 @@ import { DEFAULT_CURRENCY } from "@/lib/types";
 
 const openai = new OpenAI();
 
+export interface SuggestedCategory {
+  name: string;
+  keywords: string[];
+  reason: string;
+}
+
+export async function suggestCategoriesFromDescription(
+  description: string
+): Promise<{
+  success: boolean;
+  data?: SuggestedCategory[];
+  error?: string;
+}> {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: `You are a financial assistant. Based on the user's description of how they'll use an expense tracking app, suggest relevant expense categories.
+
+Return a JSON object with a "categories" array. Each category should have:
+- name: string (category name in Spanish)
+- keywords: string[] (2-5 keywords that help identify expenses in this category, in Spanish)
+- reason: string (brief explanation in Spanish of why this category is useful for them)
+
+Suggest 5-8 categories that are specific and relevant to their use case.`,
+        },
+        { role: "user", content: description },
+      ],
+      response_format: { type: "json_object" },
+      temperature: 0.3,
+    });
+
+    const content = response.choices[0]?.message?.content;
+    if (!content) {
+      return { success: false, error: "No se recibió respuesta de la IA" };
+    }
+
+    const parsed = JSON.parse(content) as { categories: SuggestedCategory[] };
+    return { success: true, data: parsed.categories };
+  } catch {
+    return { success: false, error: "Error al generar sugerencias" };
+  }
+}
+
+export async function transcribeAudio(
+  base64Audio: string,
+  mimeType: string
+): Promise<{
+  success: boolean;
+  data?: { text: string };
+  error?: string;
+}> {
+  try {
+    const buffer = Buffer.from(base64Audio, "base64");
+    const extension = mimeType.split("/")[1] ?? "webm";
+    const file = new File([buffer], `audio.${extension}`, { type: mimeType });
+
+    const transcription = await openai.audio.transcriptions.create({
+      file,
+      model: "whisper-1",
+      language: "es",
+    });
+
+    return { success: true, data: { text: transcription.text } };
+  } catch {
+    return { success: false, error: "Error al transcribir audio" };
+  }
+}
+
 export async function classifyExpense(
   text: string,
   categories: Category[],

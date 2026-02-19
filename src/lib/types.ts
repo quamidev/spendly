@@ -1,5 +1,14 @@
 // Database row types
 
+export interface Profile {
+  id: string;
+  full_name: string | null;
+  onboarding_completed: boolean | null;
+  credits_usd: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Category {
   id: string;
   name: string;
@@ -88,6 +97,20 @@ export interface ExpenseFilters {
 }
 
 // Constants
+
+export const ACCOUNT_TYPES: AccountType[] = [
+  "credit_card",
+  "company_bank",
+  "personal_bank",
+  "cash",
+];
+
+export const ACCOUNT_TYPE_LABELS: Record<AccountType, string> = {
+  credit_card: "Tarjeta de crédito",
+  company_bank: "Banco empresa",
+  personal_bank: "Banco personal",
+  cash: "Efectivo",
+};
 
 export const DEFAULT_CURRENCY = "GTQ";
 export const DEFAULT_PAGE_SIZE = 20;

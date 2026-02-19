@@ -1,21 +1,10 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { QuamiLogo } from "@/components/quami-logo";
 import { SpendlyLogo } from "@/components/spendly-logo";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
 
 export default async function Page() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (user) {
-    redirect("/dashboard");
-  }
-
   const t = await getTranslations("Landing");
 
   return (

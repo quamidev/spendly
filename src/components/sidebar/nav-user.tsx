@@ -32,10 +32,16 @@ export function NavUser({
   user: {
     name: string;
     email: string;
-    avatar: string;
+    image: string | null;
   };
 }) {
   const { isMobile } = useSidebar();
+  const initials = user.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 
   return (
     <SidebarMenu>
@@ -47,8 +53,10 @@ export function NavUser({
               size="lg"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage alt={user.name} src={user.avatar} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarImage alt={user.name} src={user.image ?? undefined} />
+                <AvatarFallback className="rounded-lg">
+                  {initials}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -66,8 +74,10 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage alt={user.name} src={user.avatar} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarImage alt={user.name} src={user.image ?? undefined} />
+                  <AvatarFallback className="rounded-lg">
+                    {initials}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
