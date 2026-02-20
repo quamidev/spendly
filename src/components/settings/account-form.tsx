@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { createAccount, updateAccount } from "@/lib/actions/accounts";
 import type { Account, AccountType } from "@/lib/types";
-import { ACCOUNT_TYPE_LABELS, ACCOUNT_TYPES } from "@/lib/types";
+import { ACCOUNT_TYPES } from "@/lib/types";
 
 interface AccountFormProps {
   account?: Account | null;
@@ -31,6 +32,7 @@ interface AccountFormProps {
 }
 
 export function AccountForm({ account, open, onOpenChange }: AccountFormProps) {
+  const t = useTranslations("Settings.accounts");
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(account?.name ?? "");
   const [accountType, setAccountType] = useState<AccountType>(
@@ -42,7 +44,7 @@ export function AccountForm({ account, open, onOpenChange }: AccountFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      toast.error("El nombre es requerido");
+      toast.error(t("nameRequired"));
       return;
     }
 
@@ -57,7 +59,7 @@ export function AccountForm({ account, open, onOpenChange }: AccountFormProps) {
       const result = await updateAccount(account.id, data);
       setLoading(false);
       if (result.success) {
-        toast.success("Cuenta actualizada");
+        toast.success(t("updated"));
         onOpenChange(false);
         setName("");
         setAccountType("cash");
@@ -70,7 +72,7 @@ export function AccountForm({ account, open, onOpenChange }: AccountFormProps) {
       if ("error" in result) {
         toast.error(result.error);
       } else {
-        toast.success("Cuenta creada");
+        toast.success(t("created"));
         onOpenChange(false);
         setName("");
         setAccountType("cash");
@@ -84,40 +86,38 @@ export function AccountForm({ account, open, onOpenChange }: AccountFormProps) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
-              {isEditing ? "Editar cuenta" : "Nueva cuenta"}
+              {isEditing ? t("editTitle") : t("title")}
             </DialogTitle>
             <DialogDescription>
-              {isEditing
-                ? "Modifica los datos de la cuenta"
-                : "Crea una nueva cuenta para registrar de dónde sale el dinero"}
+              {isEditing ? t("editDescription") : t("description")}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nombre</Label>
+              <Label htmlFor="name">{t("name")}</Label>
               <Input
                 id="name"
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ej: Tarjeta BAC"
+                placeholder={t("namePlaceholder")}
                 required
                 value={name}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="type">Tipo de cuenta</Label>
+              <Label htmlFor="type">{t("type")}</Label>
               <Select
                 onValueChange={(value) => setAccountType(value as AccountType)}
                 value={accountType}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecciona un tipo" />
+                  <SelectValue placeholder={t("typePlaceholder")} />
                 </SelectTrigger>
                 <SelectContent>
                   {ACCOUNT_TYPES.map((type) => (
                     <SelectItem key={type} value={type}>
-                      {ACCOUNT_TYPE_LABELS[type]}
+                      {t(`accountTypes.${type}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -131,12 +131,12 @@ export function AccountForm({ account, open, onOpenChange }: AccountFormProps) {
               type="button"
               variant="outline"
             >
-              Cancelar
+              {t("cancel")}
             </Button>
             <Button disabled={loading} type="submit">
-              {loading && "Guardando..."}
-              {!loading && isEditing && "Guardar"}
-              {!(loading || isEditing) && "Crear"}
+              {loading && t("saving")}
+              {!loading && isEditing && t("save")}
+              {!(loading || isEditing) && t("create")}
             </Button>
           </DialogFooter>
         </form>

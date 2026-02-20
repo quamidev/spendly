@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,6 +25,7 @@ interface OwnerFormProps {
 }
 
 export function OwnerForm({ owner, open, onOpenChange }: OwnerFormProps) {
+  const t = useTranslations("Settings.owners");
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(owner?.name ?? "");
   const [colorTag, setColorTag] = useState(
@@ -35,7 +37,7 @@ export function OwnerForm({ owner, open, onOpenChange }: OwnerFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      toast.error("El nombre es requerido");
+      toast.error(t("nameRequired"));
       return;
     }
 
@@ -50,7 +52,7 @@ export function OwnerForm({ owner, open, onOpenChange }: OwnerFormProps) {
       const result = await updateOwner(owner.id, data);
       setLoading(false);
       if (result.success) {
-        toast.success("Responsable actualizado");
+        toast.success(t("updated"));
         onOpenChange(false);
         setName("");
         setColorTag(OWNER_COLOR_PRESETS[0]);
@@ -63,7 +65,7 @@ export function OwnerForm({ owner, open, onOpenChange }: OwnerFormProps) {
       if ("error" in result) {
         toast.error(result.error);
       } else {
-        toast.success("Responsable creado");
+        toast.success(t("created"));
         onOpenChange(false);
         setName("");
         setColorTag(OWNER_COLOR_PRESETS[0]);
@@ -77,29 +79,27 @@ export function OwnerForm({ owner, open, onOpenChange }: OwnerFormProps) {
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
-              {isEditing ? "Editar responsable" : "Nuevo responsable"}
+              {isEditing ? t("editTitle") : t("title")}
             </DialogTitle>
             <DialogDescription>
-              {isEditing
-                ? "Modifica los datos del responsable"
-                : "Crea un nuevo responsable para identificar quién hizo el gasto"}
+              {isEditing ? t("editDescription") : t("description")}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nombre</Label>
+              <Label htmlFor="name">{t("name")}</Label>
               <Input
                 id="name"
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ej: Personal, Empresa, Jefe"
+                placeholder={t("namePlaceholder")}
                 required
                 value={name}
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Color identificador</Label>
+              <Label>{t("colorTag")}</Label>
               <div className="flex flex-wrap gap-2">
                 {OWNER_COLOR_PRESETS.map((color) => (
                   <button
@@ -117,7 +117,7 @@ export function OwnerForm({ owner, open, onOpenChange }: OwnerFormProps) {
                 ))}
               </div>
               <p className="text-muted-foreground text-xs">
-                Este color aparecerá junto a los gastos de este responsable
+                {t("colorHelp")}
               </p>
             </div>
           </div>
@@ -128,12 +128,12 @@ export function OwnerForm({ owner, open, onOpenChange }: OwnerFormProps) {
               type="button"
               variant="outline"
             >
-              Cancelar
+              {t("cancel")}
             </Button>
             <Button disabled={loading} type="submit">
-              {loading && "Guardando..."}
-              {!loading && isEditing && "Guardar"}
-              {!(loading || isEditing) && "Crear"}
+              {loading && t("saving")}
+              {!loading && isEditing && t("save")}
+              {!(loading || isEditing) && t("create")}
             </Button>
           </DialogFooter>
         </form>

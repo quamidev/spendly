@@ -1,6 +1,7 @@
 "use server";
 
 import OpenAI from "openai";
+import { getTranslations } from "next-intl/server";
 import type {
   Account,
   Category,
@@ -24,6 +25,7 @@ export async function suggestCategoriesFromDescription(
   data?: SuggestedCategory[];
   error?: string;
 }> {
+  const t = await getTranslations("Errors");
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -47,13 +49,13 @@ Suggest 5-8 categories that are specific and relevant to their use case.`,
 
     const content = response.choices[0]?.message?.content;
     if (!content) {
-      return { success: false, error: "No se recibió respuesta de la IA" };
+      return { success: false, error: t("aiNoResponse") };
     }
 
     const parsed = JSON.parse(content) as { categories: SuggestedCategory[] };
     return { success: true, data: parsed.categories };
   } catch {
-    return { success: false, error: "Error al generar sugerencias" };
+    return { success: false, error: t("aiSuggestionFailed") };
   }
 }
 
@@ -65,6 +67,7 @@ export async function transcribeAudio(
   data?: { text: string };
   error?: string;
 }> {
+  const t = await getTranslations("Errors");
   try {
     const buffer = Buffer.from(base64Audio, "base64");
     const extension = mimeType.split("/")[1] ?? "webm";
@@ -78,7 +81,7 @@ export async function transcribeAudio(
 
     return { success: true, data: { text: transcription.text } };
   } catch {
-    return { success: false, error: "Error al transcribir audio" };
+    return { success: false, error: t("aiTranscriptionFailed") };
   }
 }
 

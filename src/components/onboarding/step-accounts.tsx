@@ -2,6 +2,7 @@
 
 import { Loader2, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +20,7 @@ import {
   getAccounts,
 } from "@/lib/actions/accounts";
 import type { Account, AccountType } from "@/lib/types";
-import { ACCOUNT_TYPE_LABELS, ACCOUNT_TYPES } from "@/lib/types";
+import { ACCOUNT_TYPES } from "@/lib/types";
 
 interface AccountToCreate {
   id: string;
@@ -33,6 +34,8 @@ interface StepAccountsProps {
 }
 
 export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
+  const t = useTranslations("Onboarding.accounts");
+  const tAccounts = useTranslations("Settings.accounts");
   const [existingAccounts, setExistingAccounts] = useState<Account[]>([]);
   const [newAccounts, setNewAccounts] = useState<AccountToCreate[]>([]);
   const [loading, setLoading] = useState(false);
@@ -64,7 +67,7 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
     const result = await deleteAccount(id);
     if (result.success) {
       setExistingAccounts((prev) => prev.filter((a) => a.id !== id));
-      toast.success(`${name} eliminada`);
+      toast.success(t("deleted", { name }));
     } else {
       toast.error(result.error);
     }
@@ -104,7 +107,7 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
 
     // If no existing and no new accounts, require at least one
     if (existingAccounts.length === 0 && validNewAccounts.length === 0) {
-      toast.error("Agrega al menos una cuenta");
+      toast.error(t("atLeastOne"));
       return;
     }
 
@@ -117,7 +120,10 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
       );
       if (existsInExisting) {
         toast.error(
-          `Ya existe una cuenta "${account.name}" de tipo ${ACCOUNT_TYPE_LABELS[account.account_type]}`
+          t("duplicateExisting", {
+            name: account.name,
+            type: tAccounts(`accountTypes.${account.account_type}`),
+          })
         );
         return;
       }
@@ -129,7 +135,7 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
     );
     const uniqueKeys = new Set(keys);
     if (keys.length !== uniqueKeys.size) {
-      toast.error("No puedes agregar cuentas duplicadas (mismo nombre y tipo)");
+      toast.error(t("duplicateNew"));
       return;
     }
 
@@ -142,12 +148,12 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
           account_type: account.account_type,
         });
         if ("error" in result) {
-          toast.error(`Error al crear ${account.name}`);
+          toast.error(t("createError", { name: account.name }));
         }
       }
 
       setLoading(false);
-      toast.success("Cuentas creadas");
+      toast.success(t("created"));
     }
 
     onNext();
@@ -158,11 +164,11 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-semibold text-lg">Cuentas y métodos de pago</h2>
+        <h2 className="font-semibold text-lg">{t("title")}</h2>
         <p className="text-muted-foreground text-sm">
           {existingAccounts.length > 0
-            ? "Estas son tus cuentas actuales. Puedes eliminarlas o agregar más."
-            : "Agrega las cuentas o tarjetas que usas para pagar."}
+            ? t("descriptionExisting")
+            : t("descriptionNew")}
         </p>
       </div>
 
@@ -170,14 +176,14 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
       {loadingExisting ? (
         <div className="flex items-center justify-center gap-2 py-4">
           <Loader2 className="size-4 animate-spin" />
-          <span className="text-muted-foreground text-sm">Cargando...</span>
+          <span className="text-muted-foreground text-sm">{t("loading")}</span>
         </div>
       ) : (
         <>
           {/* Existing accounts */}
           {existingAccounts.length > 0 && (
             <div className="space-y-2">
-              <Label>Cuentas creadas</Label>
+              <Label>{t("existingLabel")}</Label>
               <div className="space-y-2">
                 {existingAccounts.map((account) => (
                   <div
@@ -189,7 +195,7 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
                         {account.name}
                       </span>
                       <span className="text-muted-foreground text-xs">
-                        {ACCOUNT_TYPE_LABELS[account.account_type]}
+                        {tAccounts(`accountTypes.${account.account_type}`)}
                       </span>
                     </div>
                     <Button
@@ -210,7 +216,9 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
           {/* New accounts to create */}
           {newAccounts.length > 0 && (
             <div className="space-y-2">
-              {existingAccounts.length > 0 && <Label>Agregar nuevas</Label>}
+              {existingAccounts.length > 0 && (
+                <Label>{t("addNewLabel")}</Label>
+              )}
               <div className="space-y-3">
                 {newAccounts.map((account) => (
                   <div
@@ -219,17 +227,17 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
                   >
                     <div className="flex flex-1 flex-col gap-2 sm:flex-row">
                       <div className="flex-1">
-                        <Label className="sr-only">Nombre</Label>
+                        <Label className="sr-only">{tAccounts("name")}</Label>
                         <Input
                           onChange={(e) =>
                             updateNewAccount(account.id, "name", e.target.value)
                           }
-                          placeholder="Nombre de la cuenta"
+                          placeholder={t("namePlaceholder")}
                           value={account.name}
                         />
                       </div>
                       <div className="w-full sm:w-40">
-                        <Label className="sr-only">Tipo</Label>
+                        <Label className="sr-only">{tAccounts("type")}</Label>
                         <Select
                           onValueChange={(value) =>
                             updateNewAccount(account.id, "account_type", value)
@@ -242,7 +250,7 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
                           <SelectContent>
                             {ACCOUNT_TYPES.map((type) => (
                               <SelectItem key={type} value={type}>
-                                {ACCOUNT_TYPE_LABELS[type]}
+                                {tAccounts(`accountTypes.${type}`)}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -267,15 +275,15 @@ export function StepAccounts({ onBack, onNext }: StepAccountsProps) {
 
       <Button className="w-full" onClick={addNewAccount} variant="outline">
         <Plus className="mr-2 size-4" />
-        Agregar {hasAccounts ? "otra " : ""}cuenta
+        {hasAccounts ? t("addAnother") : t("addAccount")}
       </Button>
 
       <div className="flex justify-between pt-4">
         <Button onClick={onBack} variant="ghost">
-          Atrás
+          {t("back")}
         </Button>
         <Button disabled={loading || loadingExisting} onClick={handleSubmit}>
-          {loading ? "Creando..." : "Continuar"}
+          {loading ? t("creating") : t("continue")}
         </Button>
       </div>
     </div>
