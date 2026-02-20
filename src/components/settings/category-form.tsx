@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,6 +28,7 @@ export function CategoryForm({
   open,
   onOpenChange,
 }: CategoryFormProps) {
+  const t = useTranslations("Settings.categories");
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState(category?.name ?? "");
   const [keywords, setKeywords] = useState(
@@ -38,7 +40,7 @@ export function CategoryForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      toast.error("El nombre es requerido");
+      toast.error(t("nameRequired"));
       return;
     }
 
@@ -58,7 +60,7 @@ export function CategoryForm({
       const result = await updateCategory(category.id, data);
       setLoading(false);
       if (result.success) {
-        toast.success("Categoría actualizada");
+        toast.success(t("updated"));
         onOpenChange(false);
         setName("");
         setKeywords("");
@@ -71,7 +73,7 @@ export function CategoryForm({
       if ("error" in result) {
         toast.error(result.error);
       } else {
-        toast.success("Categoría creada");
+        toast.success(t("created"));
         onOpenChange(false);
         setName("");
         setKeywords("");
@@ -85,22 +87,20 @@ export function CategoryForm({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
-              {isEditing ? "Editar categoría" : "Nueva categoría"}
+              {isEditing ? t("editTitle") : t("title")}
             </DialogTitle>
             <DialogDescription>
-              {isEditing
-                ? "Modifica los datos de la categoría"
-                : "Crea una nueva categoría para clasificar tus gastos"}
+              {isEditing ? t("editDescription") : t("description")}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nombre</Label>
+              <Label htmlFor="name">{t("name")}</Label>
               <Input
                 id="name"
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ej: Alimentación"
+                placeholder={t("namePlaceholder")}
                 required
                 value={name}
               />
@@ -108,18 +108,19 @@ export function CategoryForm({
 
             <div className="space-y-2">
               <Label htmlFor="keywords">
-                Palabras clave{" "}
-                <span className="text-muted-foreground">(opcional)</span>
+                {t("keywords")}{" "}
+                <span className="text-muted-foreground">
+                  {t("keywordsOptional")}
+                </span>
               </Label>
               <Input
                 id="keywords"
                 onChange={(e) => setKeywords(e.target.value)}
-                placeholder="comida, restaurante, almuerzo"
+                placeholder={t("keywordsPlaceholder")}
                 value={keywords}
               />
               <p className="text-muted-foreground text-xs">
-                Separadas por comas. Ayudan a la IA a clasificar
-                automáticamente.
+                {t("keywordsHelp")}
               </p>
             </div>
           </div>
@@ -130,12 +131,12 @@ export function CategoryForm({
               type="button"
               variant="outline"
             >
-              Cancelar
+              {t("cancel")}
             </Button>
             <Button disabled={loading} type="submit">
-              {loading && "Guardando..."}
-              {!loading && isEditing && "Guardar"}
-              {!(loading || isEditing) && "Crear"}
+              {loading && t("saving")}
+              {!loading && isEditing && t("save")}
+              {!(loading || isEditing) && t("create")}
             </Button>
           </DialogFooter>
         </form>

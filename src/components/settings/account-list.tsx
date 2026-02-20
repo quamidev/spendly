@@ -2,6 +2,7 @@
 
 import { MoreHorizontal, Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -31,7 +32,6 @@ import {
 } from "@/components/ui/table";
 import { deleteAccount, updateAccount } from "@/lib/actions/accounts";
 import type { Account } from "@/lib/types";
-import { ACCOUNT_TYPE_LABELS } from "@/lib/types";
 import { AccountForm } from "./account-form";
 
 interface AccountListProps {
@@ -39,6 +39,7 @@ interface AccountListProps {
 }
 
 export function AccountList({ accounts }: AccountListProps) {
+  const t = useTranslations("Settings.accounts");
   const [formOpen, setFormOpen] = useState(false);
   const [editingAccount, setEditingAccount] = useState<Account | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -56,9 +57,9 @@ export function AccountList({ accounts }: AccountListProps) {
     const result = await deleteAccount(deleteId);
 
     if (result.success) {
-      toast.success("Cuenta eliminada");
+      toast.success(t("list.deleted"));
     } else {
-      toast.error(result.error ?? "Error al eliminar");
+      toast.error(result.error ?? t("list.deleteError"));
     }
 
     setDeleteId(null);
@@ -71,10 +72,10 @@ export function AccountList({ accounts }: AccountListProps) {
 
     if (result.success) {
       toast.success(
-        account.is_active ? "Cuenta desactivada" : "Cuenta activada"
+        account.is_active ? t("list.deactivated") : t("list.activated")
       );
     } else {
-      toast.error(result.error ?? "Error al actualizar");
+      toast.error(result.error ?? t("list.updateError"));
     }
   };
 
@@ -82,9 +83,9 @@ export function AccountList({ accounts }: AccountListProps) {
     <>
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h2 className="font-semibold text-lg">Cuentas</h2>
+          <h2 className="font-semibold text-lg">{t("list.pageTitle")}</h2>
           <p className="text-muted-foreground text-sm">
-            Cuentas de donde sale el dinero para tus gastos
+            {t("list.pageDescription")}
           </p>
         </div>
         <Button
@@ -94,7 +95,7 @@ export function AccountList({ accounts }: AccountListProps) {
           }}
         >
           <Plus className="mr-2 size-4" />
-          Nueva cuenta
+          {t("list.new")}
         </Button>
       </div>
 
@@ -103,9 +104,9 @@ export function AccountList({ accounts }: AccountListProps) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Nombre</TableHead>
-                <TableHead>Tipo</TableHead>
-                <TableHead>Estado</TableHead>
+                <TableHead>{t("list.tableName")}</TableHead>
+                <TableHead>{t("list.tableType")}</TableHead>
+                <TableHead>{t("list.tableStatus")}</TableHead>
                 <TableHead className="w-[70px]" />
               </TableRow>
             </TableHeader>
@@ -114,7 +115,7 @@ export function AccountList({ accounts }: AccountListProps) {
                 <TableRow key={account.id}>
                   <TableCell className="font-medium">{account.name}</TableCell>
                   <TableCell>
-                    {ACCOUNT_TYPE_LABELS[account.account_type]}
+                    {t(`accountTypes.${account.account_type}`)}
                   </TableCell>
                   <TableCell>
                     <Badge
@@ -122,7 +123,7 @@ export function AccountList({ accounts }: AccountListProps) {
                       onClick={() => handleToggleActive(account)}
                       variant={account.is_active ? "default" : "secondary"}
                     >
-                      {account.is_active ? "Activa" : "Inactiva"}
+                      {account.is_active ? t("list.active") : t("list.inactive")}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -130,20 +131,20 @@ export function AccountList({ accounts }: AccountListProps) {
                       <DropdownMenuTrigger asChild>
                         <Button size="icon-sm" variant="ghost">
                           <MoreHorizontal className="size-4" />
-                          <span className="sr-only">Acciones</span>
+                          <span className="sr-only">{t("list.actions")}</span>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => handleEdit(account)}>
                           <Pencil className="mr-2 size-4" />
-                          Editar
+                          {t("list.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="text-destructive"
                           onClick={() => setDeleteId(account.id)}
                         >
                           <Trash2 className="mr-2 size-4" />
-                          Eliminar
+                          {t("list.delete")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -155,7 +156,7 @@ export function AccountList({ accounts }: AccountListProps) {
         </div>
       ) : (
         <div className="rounded-lg border p-8 text-center text-muted-foreground">
-          <p>No hay cuentas creadas</p>
+          <p>{t("list.empty")}</p>
           <Button
             className="mt-4"
             onClick={() => {
@@ -164,7 +165,7 @@ export function AccountList({ accounts }: AccountListProps) {
             }}
           >
             <Plus className="mr-2 size-4" />
-            Crear primera cuenta
+            {t("list.createFirst")}
           </Button>
         </div>
       )}
@@ -183,19 +184,18 @@ export function AccountList({ accounts }: AccountListProps) {
       <AlertDialog onOpenChange={() => setDeleteId(null)} open={!!deleteId}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>¿Eliminar cuenta?</AlertDialogTitle>
+            <AlertDialogTitle>{t("list.deleteTitle")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Esta acción no se puede deshacer. Los gastos asociados mantendrán
-              su cuenta pero aparecerá como &quot;Sin cuenta&quot;.
+              {t("list.deleteDescription")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               onClick={handleDelete}
             >
-              Eliminar
+              {t("list.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

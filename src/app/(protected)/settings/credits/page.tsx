@@ -1,6 +1,7 @@
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { format, type Locale } from "date-fns";
+import { enUS, es } from "date-fns/locale";
 import { AlertTriangle, History, Sparkles, Zap } from "lucide-react";
+import { getLocale, getTranslations } from "next-intl/server";
 import { AppHeader } from "@/components/layout/app-header";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -22,11 +23,7 @@ import {
 } from "@/components/ui/table";
 import { getCreditsAndUsage } from "@/lib/actions/credits";
 
-const REQUEST_TYPE_LABELS: Record<string, string> = {
-  parse_expense: "Parseo de texto",
-  categorize_expense: "Categorización",
-  voice_transcription: "Transcripción de voz",
-};
+const DATE_FNS_LOCALES: Record<string, Locale> = { es, en: enUS };
 
 const MODEL_LABELS: Record<string, string> = {
   "gpt-4o-mini": "GPT-4o Mini",
@@ -35,16 +32,22 @@ const MODEL_LABELS: Record<string, string> = {
 };
 
 export default async function CreditsPage() {
-  const result = await getCreditsAndUsage();
+  const [result, t, locale] = await Promise.all([
+    getCreditsAndUsage(),
+    getTranslations("Settings.credits"),
+    getLocale(),
+  ]);
+
+  const dateFnsLocale = DATE_FNS_LOCALES[locale] ?? es;
 
   if (!result.success) {
     return (
       <>
-        <AppHeader title="Créditos de IA" />
+        <AppHeader title={t("pageTitle")} />
         <div className="flex-1 p-6">
           <Alert variant="destructive">
             <AlertTriangle className="size-4" />
-            <AlertTitle>Error</AlertTitle>
+            <AlertTitle>{t("error")}</AlertTitle>
             <AlertDescription>{result.error}</AlertDescription>
           </Alert>
         </div>
@@ -57,18 +60,16 @@ export default async function CreditsPage() {
 
   return (
     <>
-      <AppHeader title="Créditos de IA" />
+      <AppHeader title={t("pageTitle")} />
       <div className="flex-1 space-y-6 p-6">
         <div className="mx-auto max-w-4xl space-y-6">
           {/* Low balance warning */}
           {isLowBalance && (
             <Alert variant="destructive">
               <AlertTriangle className="size-4" />
-              <AlertTitle>Créditos bajos</AlertTitle>
+              <AlertTitle>{t("lowBalance")}</AlertTitle>
               <AlertDescription>
-                Tu saldo de créditos es bajo. Las funciones de IA (parseo de
-                texto, voz y categorización automática) no funcionarán sin
-                créditos.
+                {t("lowBalanceDescription")}
               </AlertDescription>
             </Alert>
           )}
@@ -78,11 +79,10 @@ export default async function CreditsPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Sparkles className="size-5" />
-                Balance actual
+                {t("currentBalance")}
               </CardTitle>
               <CardDescription>
-                Los créditos se usan para funciones de IA como parseo de texto,
-                transcripción de voz y categorización automática.
+                {t("balanceDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -96,7 +96,7 @@ export default async function CreditsPage() {
                 <div className="mt-4 space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">
-                      Usado en últimos 30 días
+                      {t("usedLast30Days")}
                     </span>
                     <span className="font-medium">
                       ${stats.totalCost.toFixed(4)}
@@ -121,10 +121,10 @@ export default async function CreditsPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                   <Zap className="size-4" />
-                  Uso por tipo de solicitud
+                  {t("usageByType")}
                 </CardTitle>
                 <CardDescription>
-                  Desglose de uso en los últimos 30 días
+                  {t("usageByTypeDescription")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -136,13 +136,13 @@ export default async function CreditsPage() {
                         key={type}
                       >
                         <p className="font-medium text-sm">
-                          {REQUEST_TYPE_LABELS[type] || type}
+                          {t(`requestTypes.${type}` as Parameters<typeof t>[0]) || type}
                         </p>
                         <p className="mt-2 font-bold text-2xl">
                           {typeData.count}
                         </p>
                         <p className="text-muted-foreground text-xs">
-                          solicitudes
+                          {t("requests")}
                         </p>
                         <Badge className="mt-2 font-mono" variant="secondary">
                           ${typeData.cost.toFixed(4)}
@@ -161,20 +161,24 @@ export default async function CreditsPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                   <History className="size-4" />
-                  Historial reciente
+                  {t("recentHistory")}
                 </CardTitle>
                 <CardDescription>
-                  Últimas {stats.recentUsage.length} solicitudes de IA
+                  {t("recentHistoryDescription", {
+                    count: stats.recentUsage.length,
+                  })}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Fecha</TableHead>
-                      <TableHead>Tipo</TableHead>
-                      <TableHead>Modelo</TableHead>
-                      <TableHead className="text-right">Costo</TableHead>
+                      <TableHead>{t("tableDate")}</TableHead>
+                      <TableHead>{t("tableType")}</TableHead>
+                      <TableHead>{t("tableModel")}</TableHead>
+                      <TableHead className="text-right">
+                        {t("tableCost")}
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -182,11 +186,11 @@ export default async function CreditsPage() {
                       <TableRow key={`${usage.date}-${usage.requestType}`}>
                         <TableCell className="font-mono text-sm">
                           {format(new Date(usage.date), "dd MMM HH:mm", {
-                            locale: es,
+                            locale: dateFnsLocale,
                           })}
                         </TableCell>
                         <TableCell>
-                          {REQUEST_TYPE_LABELS[usage.requestType] ||
+                          {t(`requestTypes.${usage.requestType}` as Parameters<typeof t>[0]) ||
                             usage.requestType}
                         </TableCell>
                         <TableCell>
@@ -209,31 +213,43 @@ export default async function CreditsPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-base">
-                Información de precios
+                {t("pricingInfo")}
               </CardTitle>
               <CardDescription>
-                Costos aproximados por tipo de operación
+                {t("pricingDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 text-sm sm:grid-cols-3">
                 <div className="rounded-lg border p-3">
-                  <p className="font-medium">Parseo de texto</p>
+                  <p className="font-medium">
+                    {t("requestTypes.parse_expense")}
+                  </p>
                   <p className="text-muted-foreground text-xs">GPT-4o Mini</p>
                   <p className="mt-1 font-mono text-lg">~$0.0001</p>
-                  <p className="text-muted-foreground text-xs">por solicitud</p>
+                  <p className="text-muted-foreground text-xs">
+                    {t("perRequest")}
+                  </p>
                 </div>
                 <div className="rounded-lg border p-3">
-                  <p className="font-medium">Categorización</p>
+                  <p className="font-medium">
+                    {t("requestTypes.categorize_expense")}
+                  </p>
                   <p className="text-muted-foreground text-xs">GPT-4o Mini</p>
                   <p className="mt-1 font-mono text-lg">~$0.00005</p>
-                  <p className="text-muted-foreground text-xs">por solicitud</p>
+                  <p className="text-muted-foreground text-xs">
+                    {t("perRequest")}
+                  </p>
                 </div>
                 <div className="rounded-lg border p-3">
-                  <p className="font-medium">Transcripción de voz</p>
+                  <p className="font-medium">
+                    {t("requestTypes.voice_transcription")}
+                  </p>
                   <p className="text-muted-foreground text-xs">Whisper</p>
                   <p className="mt-1 font-mono text-lg">$0.006</p>
-                  <p className="text-muted-foreground text-xs">por minuto</p>
+                  <p className="text-muted-foreground text-xs">
+                    {t("perMinute")}
+                  </p>
                 </div>
               </div>
             </CardContent>

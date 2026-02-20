@@ -105,13 +105,6 @@ export const ACCOUNT_TYPES: AccountType[] = [
   "cash",
 ];
 
-export const ACCOUNT_TYPE_LABELS: Record<AccountType, string> = {
-  credit_card: "Tarjeta de crédito",
-  company_bank: "Banco empresa",
-  personal_bank: "Banco personal",
-  cash: "Efectivo",
-};
-
 export const DEFAULT_CURRENCY = "GTQ";
 export const DEFAULT_PAGE_SIZE = 20;
 
